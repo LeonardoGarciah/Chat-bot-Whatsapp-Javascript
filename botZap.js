@@ -62,23 +62,43 @@ const puppeteer = require('puppeteer');
 
             console.log(lastMessagesCount);
 
-            if (messagesIn.length > lastMessagesCount || ultimaMsgA === "Oi" || ultimaMsgA === "Produtos") {
+            if (messagesIn.length > lastMessagesCount || ultimaMsgA === "Oi" || ultimaMsgA === "cardapio") {
 
                 console.log("Nova mensagem!");
 
                 var msg1 = messagesIn[messagesIn.length - 1].textContent;
                 var msg2 = msg1.replace(msg1.substring(msg1.length - 5, msg1.length), "");
+                msg2 = msg2.toLowerCase();
+                if (msg2.indexOf("á") != -1) {
+                    msg2 = msg2.replace("á", "a");
+                }
                 document.querySelector("div[data-tab='9']").focus();
-                if (msg2 === "Produtos") {
-                    document.execCommand('insertText', false, "Arroz e feijão!");
+                if (msg2 === "cardapio") {
+                    var date = new Date();
+                    var d = date.getDay();
+                    d = d - 1;
+                    var diaSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+
+                    if (diaSemana[d] === 'Segunda') {
+                        document.execCommand('insertText', false, "Cardapio da " + diaSemana[d] + " é Arroz e feijão e carne!");
+                    } else if (diaSemana[d] === 'Terça') {
+                        document.execCommand('insertText', false, "Cardapio da " + diaSemana[d] + " é Arroz e feijão e frango!");
+                    } else if (diaSemana[d] === 'Quarta') {
+                        document.execCommand('insertText', false, "Cardapio da " + diaSemana[d] + " é Macarrão e Filé de frango!");
+                    } else if (diaSemana[d] === 'Quinta') {
+                        document.execCommand('insertText', false, "Cardapio da " + diaSemana[d] + " é Batata frita e arroz e feijão!");
+                    } else if (diaSemana[d] === 'Sexta') {
+                        document.execCommand('insertText', false, "Cardapio da " + diaSemana[d] + " é Macarrão com carne moida e farofa");
+                    }
+
 
                     document.querySelectorAll('._4sWnG')[0].click()
                 } else if (msg2 === "Oi") {
-                    document.execCommand('insertText', false, "Insira *Produtos* para ver os produtos de hoje! :)");
+                    document.execCommand('insertText', false, "Insira *Cardapio* para ver o cardapio de hoje! :)");
 
                     document.querySelectorAll('._4sWnG')[0].click()
-                } else if (msg2 != "Oi" || msg2 != "Produtos") {
-                    document.execCommand('insertText', false, "Comando invalido! Insira *Produtos* para ver os produtos de hoje! :)");
+                } else if (msg2 != "Oi" || msg2 != "cardapio") {
+                    document.execCommand('insertText', false, "Comando invalido! Insira *Cardapio* para ver o cardapio de hoje! :)");
 
                     document.querySelectorAll('._4sWnG')[0].click()
                 }
